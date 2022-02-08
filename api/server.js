@@ -13,7 +13,7 @@ server.get('/api/users', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({
-                message: 'error getting all users',
+                message: 'The users information could not be retrieved',
                 error: err.message
             })
         })
@@ -24,14 +24,14 @@ server.get('/api/users/:id', async (req, res) => {
         const user = await User.findById(req.params.id)
         if (!user) {
             res.status(404).json({
-                message: `user by id ${req.params.id} does not exist`
+                message: 'The user with the specified ID does not exist'
             })
         } else {
             res.json(user)
         }
     } catch (err) {
         res.status(500).json({
-            message: 'error getting user by id',
+            message: 'The user information could not be retrieved',
             error: err.message
         })
     }
@@ -41,7 +41,7 @@ server.post('/api/users', async (req, res) => {
     try {
         if (!req.body.name || !req.body.bio) {
             res.status(400).json({
-                message: 'name and bio are required'
+                message: 'Please provide name and bio for the user'
             })
         } else {
             const newUser = await User.insert(req.body)
@@ -62,17 +62,19 @@ server.put('/api/users/:id', async (req, res) => {
         const updated = await User.update(id, body)
         if (!updated) {
             res.status(404).json({
-                message: `user by id ${id} does not exist`
+                message: 'The user with the specified ID does not exist'
             })
         } else {
             res.json(body)
         }
     } catch (err) {
         res.status(500).json({
-            message: 'error updating existing user',
+            message: 'The user information could not be modified',
             error: err.message
         })
     }
 });
+
+
 
 module.exports = server;
